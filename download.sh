@@ -22,5 +22,5 @@ files=(
 
 for file in "${files[@]}"
 do
-  wget -nv "https://raw.githubusercontent.com/hashicorp/terraform/main/$file"
+  wget -nc -nv "https://raw.githubusercontent.com/hashicorp/terraform/main/$file"
 done
