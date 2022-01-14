@@ -17,4 +17,10 @@ files=(
   "internal/dag/walk_test.go"
   "internal/tfdiags/diagnostics.go"
   "internal/tfdiags/diagnostics_test.go"
+  "LICENSE"
 )
+
+for file in "${files[@]}"
+do
+  wget -nv "https://raw.githubusercontent.com/hashicorp/terraform/main/$file"
+done
