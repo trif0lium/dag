@@ -1,8 +1,4 @@
-package tfdiags
-
-import (
-	"github.com/hashicorp/hcl/v2"
-)
+package dag
 
 type Diagnostic interface {
 	Severity() Severity
@@ -33,9 +29,4 @@ type Description struct {
 type Source struct {
 	Subject *SourceRange
 	Context *SourceRange
-}
-
-type FromExpr struct {
-	Expression  hcl.Expression
-	EvalContext *hcl.EvalContext
 }
