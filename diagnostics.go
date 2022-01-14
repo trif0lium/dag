@@ -6,10 +6,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-
-	"github.com/hashicorp/errwrap"
-	multierror "github.com/hashicorp/go-multierror"
-	"github.com/hashicorp/hcl/v2"
 )
 
 // Diagnostics is a list of diagnostics. Diagnostics is intended to be used
@@ -59,29 +55,8 @@ func (diags Diagnostics) Append(new ...interface{}) Diagnostics {
 			diags = diags.Append(ti.Diagnostics) // unwrap
 		case NonFatalError:
 			diags = diags.Append(ti.Diagnostics) // unwrap
-		case hcl.Diagnostics:
-			for _, hclDiag := range ti {
-				diags = append(diags, hclDiagnostic{hclDiag})
-			}
-		case *hcl.Diagnostic:
-			diags = append(diags, hclDiagnostic{ti})
-		case *multierror.Error:
-			for _, err := range ti.Errors {
-				diags = append(diags, nativeError{err})
-			}
 		case error:
-			switch {
-			case errwrap.ContainsType(ti, Diagnostics(nil)):
-				// If we have an errwrap wrapper with a Diagnostics hiding
-				// inside then we'll unpick it here to get access to the
-				// individual diagnostics.
-				diags = diags.Append(errwrap.GetType(ti, Diagnostics(nil)))
-			case errwrap.ContainsType(ti, hcl.Diagnostics(nil)):
-				// Likewise, if we have HCL diagnostics we'll unpick that too.
-				diags = diags.Append(errwrap.GetType(ti, hcl.Diagnostics(nil)))
-			default:
-				diags = append(diags, nativeError{ti})
-			}
+			diags = append(diags, nativeError{ti})
 		default:
 			panic(fmt.Errorf("can't construct diagnostic(s) from %T", item))
 		}
