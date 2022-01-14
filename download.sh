@@ -15,6 +15,7 @@ files=(
   "internal/dag/tarjan_test.go"
   "internal/dag/walk.go"
   "internal/dag/walk_test.go"
+  "internal/tfdiags/diagnostic.go"
   "internal/tfdiags/diagnostics.go"
   "internal/tfdiags/diagnostics_test.go"
   "LICENSE"
